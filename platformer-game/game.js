@@ -1,7 +1,7 @@
-const canvas = document.getElementById("gamecanvas")
+const canvas = document.getElementById("gamecanvas");
 const ctx = canvas.getContext("2d");
 const playerImage = new Image();
-playerImage.src = "player.jpg";
+playerImage.src = "player.jpg"; // ตรวจสอบให้แน่ใจว่า 'player.jpg' อยู่ในไดเรกทอรีเดียวกันหรือระบุพาธที่ถูกต้อง
 
 const gravity = 0.5;
 const floor = canvas.height - 50;
@@ -22,29 +22,31 @@ let level = 1;
 let maxlevel = 3;
 let goalline = 750;
 
-let levedeta = {
+// แก้ไขชื่อตัวแปร: levelData
+let levelData = {
     1: [
-        { x: 300, y: floor, width: 40, height: 40},
-        { x: 500, y: floor -30, width: 50, height:50},
+        { x: 300, y: floor - 40, width: 40, height: 40 }, // ปรับ y ให้อยู่เหนือพื้น
+        { x: 500, y: floor - 50, width: 50, height: 50 }, // ปรับ y ให้อยู่เหนือพื้น
     ],
     2: [
-        { x: 250, y: floor - 10, width: 40, height: 40},
-        { x: 450, y: floor - 40, width: 50, height: 60},
-        { x: 650, y: floor - 10, width: 30, height: 50},
+        { x: 250, y: floor - 40, width: 40, height: 40 },
+        { x: 450, y: floor - 60, width: 50, height: 60 },
+        { x: 650, y: floor - 50, width: 30, height: 50 },
     ],
     3: [
-        {x: 200, y: floor, width:50, height:40},
-        { x: 400, y: floor - 20, width: 50, height: 50},
-        { x: 600, y: floor - 30, width: 60, height: 60},
-        { x: 700, y: floor - 50, width: 20, height: 50},
+        { x: 200, y: floor - 40, width: 50, height: 40 },
+        { x: 400, y: floor - 70, width: 50, height: 50 },
+        { x: 600, y: floor - 80, width: 60, height: 60 },
+        { x: 700, y: floor - 100, width: 20, height: 50 },
     ]
-}
+};
 
-let obstacles = levedeta[level];
+let obstacles = levelData[level]; // แก้ไขชื่อตัวแปร
 
-function resetolayer() {
+// แก้ไขชื่อฟังก์ชัน: resetPlayer
+function resetPlayer() {
     player.x = 50;
-    player.y = floor = player.height;
+    player.y = floor - player.height; // แก้ไขการคำนวณ
     player.dy = 0;
     player.jumping = false;
     player.dx = 0;
@@ -52,50 +54,50 @@ function resetolayer() {
 
 function drawPlayer() {
     ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
-
 }
 
 function drawObstacles() {
-    ctx.fillStyle = "2c3e50";
-    obstecles.forEach(obs => {
+    ctx.fillStyle = "#2c3e50"; // เพิ่ม '#' สำหรับรหัสสี hex
+    obstacles.forEach(obs => { // แก้ไขชื่อตัวแปร
         ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
     });
 }
 
-function updetePlayer() {
+// แก้ไขชื่อฟังก์ชัน: updatePlayer
+function updatePlayer() {
     player.dy += gravity;
     player.y += player.dy;
     player.x += player.dx;
 
-if (player.y + player.height > floor) {
-    player.y = floor - player.height;
-    player.dy = 0;
-    player.jumping = false;
-}
+    if (player.y + player.height > floor) {
+        player.y = floor - player.height;
+        player.dy = 0;
+        player.jumping = false;
+    }
 
-if (player.x < 0) player.x = 0;
-if (playes.x + playes.width > canvas.width) player.x = canvas.width - player.width;
+    if (player.x < 0) player.x = 0;
+    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width; // แก้ไขการสะกดผิด
 }
 
 function detectCollison() {
     for (let obs of obstacles) {
         if (
             player.x < obs.x + obs.width &&
-            player.x + playes.width > obs.x &&
-            playes.y < obs.y +obs.height &&
+            player.x + player.width > obs.x && // แก้ไขการสะกดผิด
+            player.y < obs.y + obs.height && // แก้ไขการสะกดผิด
             player.y + player.height > obs.y
         ) {
-            alert("💥 Game Over! ชนสิ่งกีดขวางแล้ว")
+            alert("💥 Game Over! ชนสิ่งกีดขวางแล้ว");
             score = 0;
             level = 1;
-            updeteUI();
-            obstacles = leveldata[level];
+            updateUI(); // แก้ไขชื่อฟังก์ชัน
+            obstacles = levelData[level]; // แก้ไขชื่อตัวแปร
             resetPlayer();
         }
     }
 }
 
-function checkGoel() {
+function checkGoel() { // "Goal" สะกดด้วย "a" - checkGoal เป็นชื่อที่นิยมมากกว่า
     if (player.x + player.width >= goalline) {
         score += 100;
         level++;
@@ -103,23 +105,24 @@ function checkGoel() {
             alert("🎉 ชนะเกมทั้งหมดแล้ว! คะแนน: " + score);
             score = 0;
             level = 1;
-        } else{
+        } else {
             alert("✅ ผ่านด่าน! ไปด่านถัดไป");
         }
-        updeteUI();
-        obstacles = levedeta[level];
+        updateUI(); // แก้ไขชื่อฟังก์ชัน
+        obstacles = levelData[level]; // แก้ไขชื่อตัวแปร
         resetPlayer();
     }
 }
 
-function updeteUI() {
+// แก้ไขชื่อฟังก์ชัน: updateUI
+function updateUI() {
     document.getElementById("score").innerText = score;
     document.getElementById("level").innerText = level;
 }
 
 function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    updetePlayer();
+    updatePlayer(); // แก้ไขชื่อฟังก์ชัน
     drawObstacles();
     detectCollison();
     checkGoel();
@@ -136,7 +139,7 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-document.addEventListener("keyu", (e) => {
+document.addEventListener("keyup", (e) => { // แก้ไขชื่อ event
     keys[e.code] = false;
     if (e.code === "ArrowRight" || e.code === "ArrowLeft") {
         player.dx = 0;
@@ -145,6 +148,6 @@ document.addEventListener("keyu", (e) => {
 
 playerImage.onload = () => {
     resetPlayer();
-    updateUI();
+    updateUI(); // แก้ไขชื่อฟังก์ชัน
     gameLoop();
 };
