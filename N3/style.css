@@ -6,7 +6,7 @@
 }
 
 body {
-    background: aliceblue;
+    background: cadetblue;
 }
 
 span.a {
@@ -33,11 +33,19 @@ section {
     background-color: bisque;
     height: 300px;
     width: 200px;
+    float: left;
 }
 
 article {
-    float: left;
-    padding: 20px;
-    width: 20px;
+    padding: 5px;
+    width: 100%;
     background-color: aquamarine;
+}
+
+#p1 {
+    font-size: 30px;
+}
+
+a {
+    color: black;
 }
