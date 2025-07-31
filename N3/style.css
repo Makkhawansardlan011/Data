@@ -40,6 +40,13 @@ article {
     padding: 5px;
     width: 100%;
     background-color: aquamarine;
+    text-align: center;
+}
+
+article.ac1 {
+    padding: 100px;
+    width: 100%;
+    background-color: aquamarine;
 }
 
 #p1 {
@@ -48,4 +55,12 @@ article {
 
 a {
     color: black;
+}
+
+img {
+    width: 500px;
+}
+
+img.i1 {
+    width: 350px;
 }
